@@ -7,8 +7,9 @@ pipeline {
     }
 
     environment {
-        IMAGE_NAME = 'timesheet-devops'
-        IMAGE_TAG  = '1.0'
+        IMAGE_NAME     = 'timesheet-devops'
+        IMAGE_TAG      = '1.0'
+        DOCKERHUB_USER = 'yasminaaaa7'
     }
 
     stages {
@@ -39,6 +40,22 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker tag $IMAGE_NAME:$IMAGE_TAG $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
+                        docker push $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
+                    '''
+                }
             }
         }
     }
