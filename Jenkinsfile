@@ -9,7 +9,7 @@ pipeline {
     environment {
         IMAGE_NAME     = 'timesheet-devops'
         IMAGE_TAG      = '1.0'
-        DOCKERHUB_USER = 'yasminaaaa7'
+        DOCKERHUB_USER = 'yasminaaa7'
     }
 
     stages {
