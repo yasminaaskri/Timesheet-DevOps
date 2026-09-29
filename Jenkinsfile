@@ -13,6 +13,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/yasminaaskri/Timesheet-DevOps.git'
@@ -60,7 +61,9 @@ pipeline {
                     '''
                 }
             }
-        } stage('Deploy') {
+        }
+
+        stage('Deploy') {
             steps {
                 sh '''
                     docker compose down || true
