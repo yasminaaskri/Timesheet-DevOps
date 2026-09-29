@@ -32,11 +32,11 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+                stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     sh '''
-                        mvn sonar:sonar \
+                        mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
                           -Dsonar.projectKey=timesheet-devops \
                           -Dsonar.host.url=http://localhost:9000 \
                           -Dsonar.token=$SONAR_TOKEN
@@ -44,7 +44,6 @@ pipeline {
                 }
             }
         }
-
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
